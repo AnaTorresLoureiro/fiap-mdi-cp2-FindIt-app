@@ -45,7 +45,6 @@ A gestão de itens perdidos impacta diretamente a experiência dos alunos no cam
 
 - Ana Laura Torres Loureiro - RM554375
 - Murilo Cordeiro Ferreira - RM556727
-- Vitor Augusto França de Oliveira- RM555469
 - Geronimo Augusto - RM557170
 - Ianny Raquel Ferreira de Souza - RM559096
 
