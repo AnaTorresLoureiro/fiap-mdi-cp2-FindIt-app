@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useState, useCallback } from 'react';
 import { useReports } from '../../../context/reportContext';
 import { formatDateInput } from '../../../utils/dateFormat';
+import * as ImagePicker from 'expo-image-picker';
 
 const REPORT_TYPE_CONFIG = {
   found: {
@@ -48,6 +50,7 @@ function createEmptyForm() {
     extraInfo: '',
     local: '',
     time: '',
+    photo: null,
   };
 }
 
@@ -61,6 +64,20 @@ export default function ReportFormScreen() {
 
   const [form, setForm] = useState(createEmptyForm());
   const [errors, setErrors] = useState({});
+
+  async function selecionarImagem() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setForm((prev) => ({
+        ...prev,
+        photo: result.assets[0].uri,
+      }));
+    }
+  }
 
   const resetForm = useCallback(() => {
     setForm(createEmptyForm());
@@ -114,6 +131,7 @@ export default function ReportFormScreen() {
       extraInfo: form.extraInfo.trim(),
       local: form.local.trim(),
       time: form.time.trim(),
+      photo: form.photo,
     });
 
     resetForm();
@@ -133,6 +151,24 @@ export default function ReportFormScreen() {
       >
         <View>
           <Text style={styles.titleText}>{config.title}</Text>
+        </View>
+
+        <View style={styles.card}>
+          <View style={styles.sectionHeader}>
+            <Ionicons name="image-outline" size={20} color="#F01259" />
+            <Text style={styles.sectionTitle}>Foto do Item</Text>
+          </View>
+
+          <TouchableOpacity style={styles.photoButton} onPress={selecionarImagem}>
+            {form.photo ? (
+              <Image source={{ uri: form.photo }} style={styles.photoPreview} />
+            ) : (
+              <>
+                <Ionicons name="add-circle-outline" size={32} color="#F01259" />
+                <Text style={styles.photoButtonText}>Adicionar foto</Text>
+              </>
+            )}
+          </TouchableOpacity>
         </View>
 
         <View style={styles.card}>
@@ -336,5 +372,30 @@ const styles = StyleSheet.create({
     color: '#F01259',
     fontSize: 16,
     fontFamily: 'Montserrat_600SemiBold',
+  },
+
+  photoButton: {
+    width: '100%',
+    height: 150,
+    borderWidth: 2,
+    borderColor: '#F01259',
+    borderStyle: 'dashed',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8,
+    overflow: 'hidden',
+  },
+
+  photoPreview: {
+    width: '100%',
+    height: '100%',
+  },
+
+  photoButtonText: {
+    color: '#F01259',
+    fontSize: 14,
+    fontFamily: 'Montserrat_600SemiBold',
+    marginTop: 8,
   },
 });

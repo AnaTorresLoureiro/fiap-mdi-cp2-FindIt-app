@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useReports } from '../../context/reportContext';
@@ -52,7 +52,11 @@ function buildLocationInfo(report, type) {
 function ReportCard({ report, type }) {
   return (
     <View style={styles.cardItem}>
-      <View style={styles.image} />
+      {report.photo ? (
+        <Image source={{ uri: report.photo }} style={styles.image} />
+      ) : (
+        <View style={styles.image} />
+      )}
 
       <View style={styles.info}>
         <Text style={styles.description}>

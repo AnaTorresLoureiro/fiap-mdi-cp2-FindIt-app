@@ -1,9 +1,7 @@
-import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Stack } from 'expo-router';
 import {
   Montserrat_400Regular,
   Montserrat_500Medium,
-  Montserrat_600SemiBold,
   Montserrat_700Bold,
   Montserrat_800ExtraBold,
   useFonts,
@@ -11,6 +9,7 @@ import {
 import { useEffect } from 'react';
 import { Text, TextInput } from 'react-native';
 import { ReportProvider } from '../context/reportContext';
+import { AuthProvider, useAuth } from '../context/authContext';
 
 let typographyConfigured = false;
 
@@ -30,11 +29,10 @@ function applyGlobalTypography() {
   typographyConfigured = true;
 }
 
-export default function Layout() {
+function RootLayoutContent() {
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
     Montserrat_500Medium,
-    Montserrat_600SemiBold,
     Montserrat_700Bold,
     Montserrat_800ExtraBold,
   });
@@ -45,52 +43,38 @@ export default function Layout() {
     }
   }, [fontsLoaded]);
 
+  const { isHydrated, isAuthenticated } = useAuth();
+
   if (!fontsLoaded) {
     return null;
   }
 
+  if (!isHydrated) {
+    return null;
+  }
+
+  const initialRoute = isAuthenticated ? 'tabs' : 'auth/login';
+
   return (
     <ReportProvider>
-      <Tabs
-        initialRouteName="auth/login"
+      <Stack
+        initialRouteName={initialRoute}
         screenOptions={{
-          tabBarActiveTintColor: '#E83D84',
           headerShown: false,
-          tabBarLabelStyle: { fontFamily: 'Montserrat_600SemiBold' },
         }}
       >
+        <Stack.Screen name="auth/login" />
+        <Stack.Screen name="tabs" />
 
-      <Tabs.Screen
-        name="tabs/item/[type]"
-        options={{ href: null }}
-      />
-
-      <Tabs.Screen
-        name="tabs/success/[type]"
-        options={{ href: null }}
-      />
-
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Relatar item',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="clipboard-outline" size={24} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="tabs/history"
-        options={{
-          title: 'Itens registrados',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="document-text-outline" size={24} color={color} />
-          ),
-        }}
-      />
-
-      </Tabs>
+      </Stack>
     </ReportProvider>
+  );
+}
+
+export default function Layout() {
+  return (
+    <AuthProvider>
+      <RootLayoutContent />
+    </AuthProvider>
   );
 }
