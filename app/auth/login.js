@@ -131,7 +131,8 @@ export default function Home() {
           >
             <TextInput
               style={[styles.input, erroUsuario && styles.inputErro]}
-              placeholderTextColor="#ffffff"
+              placeholder="Digite seu usuário"
+              placeholderTextColor="#aaa"
               value={usuario}
               onChangeText={setUsuario}
             />
@@ -161,7 +162,8 @@ export default function Home() {
               ]}>
                 <TextInput
                   style={styles.inputSenha}
-                  placeholderTextColor="#ffffff"
+                  placeholder="Digite sua senha"
+                  placeholderTextColor="#aaa"
                   secureTextEntry={!mostrarSenha}
                   value={senha}
                   onChangeText={setSenha}
@@ -234,7 +236,7 @@ const styles = StyleSheet.create({
   },
   texto: {
     fontSize: 12,
-    alignSelf: 'flex-start', // corrigido
+    alignSelf: 'flex-start',
     fontFamily: 'Montserrat_700Bold',
     color: '#E1E1E1',
     marginLeft: 24,
