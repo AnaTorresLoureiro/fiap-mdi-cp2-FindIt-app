@@ -7,7 +7,10 @@ import {
   TextInput,
   ActivityIndicator,
   Animated,
-  Alert
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView
 } from 'react-native';
 
 import { useState, useRef } from 'react';
@@ -43,7 +46,7 @@ export default function Cadastro() {
 
   async function selecionarImagem() {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'], // ✅ corrigido (nova API)
       quality: 1,
     });
 
@@ -78,7 +81,7 @@ export default function Cadastro() {
       try {
         const novoUsuario = register(nome, email, senha, foto);
         const loggedIn = loginWithUser(novoUsuario);
-        
+
         if (loggedIn) {
           setLoading(false);
           Alert.alert(
@@ -104,80 +107,92 @@ export default function Cadastro() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
 
-      
-      <TouchableOpacity onPress={selecionarImagem} style={styles.fotoContainer}>
-        {foto ? (
-          <Image source={{ uri: foto }} style={styles.foto} />
-        ) : (
-          <MaterialIcons name="add-a-photo" size={32} color="#fff" />
-        )}
-      </TouchableOpacity>
+          {/* FOTO */}
+          <TouchableOpacity onPress={selecionarImagem} style={styles.fotoContainer}>
+            {foto ? (
+              <Image source={{ uri: foto }} style={styles.foto} />
+            ) : (
+              <MaterialIcons name="add-a-photo" size={32} color="#fff" />
+            )}
+          </TouchableOpacity>
 
-      
-      <Text style={styles.label}>NOME COMPLETO</Text>
-      <Animated.View style={{ width: '100%',
-          alignItems: 'center', transform: [{ translateX: anim }] }}>
-        <TextInput
-          style={[styles.input, erro.nome && styles.inputErro]}
-          value={nome}
-          onChangeText={setNome}
-        />
-      </Animated.View>
-      {erro.nome && <Text style={styles.erro}>{erro.nome}</Text>}
+          {/* NOME */}
+          <Text style={styles.label}>NOME COMPLETO</Text>
+          <Animated.View style={{ width: '100%', alignItems: 'center', transform: [{ translateX: anim }] }}>
+            <TextInput
+              style={[styles.input, erro.nome && styles.inputErro]}
+              value={nome}
+              onChangeText={setNome}
+            />
+          </Animated.View>
+          {erro.nome && <Text style={styles.erro}>{erro.nome}</Text>}
 
-      
-      <Text style={styles.label}>E-MAIL</Text>
-      <Animated.View style={{width: '100%',
-          alignItems: 'center', transform: [{ translateX: anim }] }}>
-        <TextInput
-          style={[styles.input, erro.email && styles.inputErro]}
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-      </Animated.View>
-      {erro.email && <Text style={styles.erro}>{erro.email}</Text>}
+          {/* EMAIL */}
+          <Text style={styles.label}>E-MAIL</Text>
+          <Animated.View style={{ width: '100%', alignItems: 'center', transform: [{ translateX: anim }] }}>
+            <TextInput
+              style={[styles.input, erro.email && styles.inputErro]}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+          </Animated.View>
+          {erro.email && <Text style={styles.erro}>{erro.email}</Text>}
 
-      {/* SENHA */}
-      <Text style={styles.label}>SENHA</Text>
-      <View style={[styles.inputContainer, erro.senha && styles.inputErro]}>
-        <TextInput
-          style={styles.inputSenha}
-          secureTextEntry={!mostrarSenha}
-          value={senha}
-          onChangeText={setSenha}
-        />
-        <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
-          <MaterialIcons name={mostrarSenha ? "visibility" : "visibility-off"} size={24} color="#fff" />
-        </TouchableOpacity>
-      </View>
-      {erro.senha && <Text style={styles.erro}>{erro.senha}</Text>}
+          {/* SENHA */}
+          <Text style={styles.label}>SENHA</Text>
+          <View style={[styles.inputContainer, erro.senha && styles.inputErro]}>
+            <TextInput
+              style={styles.inputSenha}
+              secureTextEntry={!mostrarSenha}
+              value={senha}
+              onChangeText={setSenha}
+            />
+            <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
+              <MaterialIcons
+                name={mostrarSenha ? "visibility" : "visibility-off"}
+                size={24}
+                color="#fff"
+              />
+            </TouchableOpacity>
+          </View>
+          {erro.senha && <Text style={styles.erro}>{erro.senha}</Text>}
 
-      {/* CONFIRMAR SENHA */}
-      <Text style={styles.label}>CONFIRMAR SENHA</Text>
-      <View style={[styles.inputContainer, erro.confirmar && styles.inputErro]}>
-        <TextInput
-          style={styles.inputSenha}
-          secureTextEntry={!mostrarSenha}
-          value={confirmarSenha}
-          onChangeText={setConfirmarSenha}
-        />
-      </View>
-      {erro.confirmar && <Text style={styles.erro}>{erro.confirmar}</Text>}
+          {/* CONFIRMAR SENHA */}
+          <Text style={styles.label}>CONFIRMAR SENHA</Text>
+          <View style={[styles.inputContainer, erro.confirmar && styles.inputErro]}>
+            <TextInput
+              style={styles.inputSenha}
+              secureTextEntry={!mostrarSenha}
+              value={confirmarSenha}
+              onChangeText={setConfirmarSenha}
+            />
+          </View>
+          {erro.confirmar && <Text style={styles.erro}>{erro.confirmar}</Text>}
 
-      {/* BOTÃO */}
-      <TouchableOpacity style={styles.botao} onPress={handleCadastro}>
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.botaoTexto}>CADASTRAR</Text>
-        )}
-      </TouchableOpacity>
-    </View>
+          {/* BOTÃO */}
+          <TouchableOpacity style={styles.botao} onPress={handleCadastro}>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.botaoTexto}>CADASTRAR</Text>
+            )}
+          </TouchableOpacity>
+
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
