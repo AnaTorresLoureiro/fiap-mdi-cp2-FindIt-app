@@ -63,13 +63,33 @@ O FindIt resolve isso ao:
 - Tipografia com **Montserrat**
 
 ---
+# Telas
 
-### Roadmap
-- Integração com backend/API
-- Sistema de busca e filtros avançados
-- Notificações para correspondência de itens
-- Melhorias de performance e caching
-- Possível uso de armazenamento em nuvem para imagens
+### Login
+<img src="https://github.com/user-attachments/assets/b958ae60-52cf-46b9-bb20-4430149620b5" width="300" />
+
+### Cadastro
+<img src="https://github.com/user-attachments/assets/179df81f-1f6c-4927-b37d-05163c3527db" width="300" />
+
+### Tela Principal
+<img src="https://github.com/user-attachments/assets/e4ddbb58-5223-4ac6-a442-fef661e18216" width="300" />
+
+### Formulário
+<img src="https://github.com/user-attachments/assets/651b8bef-47b3-434f-926e-ed2d8bbeb58e" width="300" />
+
+### Mensagem de envio
+<img src="https://github.com/user-attachments/assets/c35dd39e-7415-4b57-ad7f-66649d2adfb2" width="300" />
+
+### Histórico
+<img src="https://github.com/user-attachments/assets/a4eb78a0-bf69-4bd5-af83-e6f428f95307" width="300" />
+
+### Perfil
+<img src="https://github.com/user-attachments/assets/c29272e2-7042-42e1-b13d-4f61fa700e85" width="300" />
+
+---
+
+## Fluxo
+[![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://youtu.be/jJ2MBtiBfBY)
 
 ---
 
@@ -135,6 +155,15 @@ npm install
 npx expo start
 ```
 Depois, escaneie o QR Code com o Expo Go ou execute em um emulador.
+
+---
+
+### Roadmap
+- Integração com backend/API
+- Sistema de busca e filtros avançados
+- Notificações para correspondência de itens
+- Melhorias de performance e caching
+- Possível uso de armazenamento em nuvem para imagens
 
 ---
 
