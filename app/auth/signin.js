@@ -187,6 +187,15 @@ export default function Cadastro() {
             )}
           </TouchableOpacity>
 
+          <TouchableOpacity
+            style={styles.voltarBotao}
+            onPress={() => router.push('/auth/login')}
+            accessibilityRole="button"
+            accessibilityLabel="Voltar para login"
+          >
+            <Text style={styles.voltarTexto}>VOLTAR PARA LOGIN</Text>
+          </TouchableOpacity>
+
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -279,5 +288,20 @@ const styles = StyleSheet.create({
   botaoTexto: {
     color: '#F01259',
     fontWeight: 'bold'
+  },
+
+  voltarBotao: {
+    width: '90%',
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12,
+    marginBottom: 24
+  },
+
+  voltarTexto: {
+    color: '#E1E1E1',
+    fontSize: 12,
+    fontFamily: 'Montserrat_700Bold'
   }
 });
